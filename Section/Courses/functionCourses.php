@@ -3,7 +3,7 @@ require_once ("dbConnection/DB_connection.php");
 function showCourses($value) {
 $connection = DBConnect();
 
-$query = "SELECT * FROM Courses WHERE type='unit' AND partKinesi= $value";
+$query = "SELECT * FROM Courses WHERE type='unit' AND partKinesia= $value";
 $statement = $connection->prepare($query);
 $statement->execute();
 $courses = $statement->fetchAll();
@@ -31,5 +31,6 @@ ob_start();
 </div>
 <?php
     echo ob_get_clean();
+    $connection=null;
 }
 ?>
