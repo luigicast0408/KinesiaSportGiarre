@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.nav-link {
+    color: #000; /* Text color of the links */
+    font-weight: bold; /* Bold text for the links */
+    text-decoration: none; /* Remove default underline */
+    margin: 0 10px; /* Adjust as needed */
+}
+
+.nav-link:hover {
+    color: #ff0000; /* Text color of links on hover */
+}
+
+.navbar {
+    margin-bottom: 0;
+    background-color: #F0F0F0; /* Background color of the navbar */
+    padding: 10px; /* Adjust as needed */
+}
+
+.nav2 .nav-link i {
+    font-size: 1.5rem; /* Increase the size of the icons */
+    color: #333; /* Change the color to make them more visible */
+    margin-right: 10px; /* Add some space between icons */
+}
+
+.nav2 .nav-link i:hover {
+    color: #007bff; /* Change color on hover for better visibility */
+}
+
+.nav2 .navbar-brand img {
+    height: 150px;
+    width: 250px;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #F0F0F0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}

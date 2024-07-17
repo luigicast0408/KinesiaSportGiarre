@@ -1,0 +1,9 @@
+.header
+{
+    background-image: url(""); /* immagine di sfondo */
+    background-size: cover; /* ridimensiona l'immagine per coprire l'intera area del contenitore */
+    background-position: center center; /* posiziona l'immagine al centro */
+    padding: 100px 4px; /* spazio sopra e sotto l'elemento */
+    text-align: center; /* allinea il testo al centro */
+    color: rebeccapurple;
+}
