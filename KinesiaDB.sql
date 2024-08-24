@@ -3,7 +3,6 @@ CREATE TABLE Clients
     client_id    INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
     first_name   VARCHAR(255) NOT NULL,
     last_name    VARCHAR(255) NOT NULL,
-    birth_date   DATETIME     NOT NULL,
     phone_number VARCHAR(255) NOT NULL,
     email        VARCHAR(255) NOT NULL,
     username     VARCHAR(255) NOT NULL,
@@ -29,12 +28,7 @@ CREATE TABLE Courses
     type               VARCHAR(255) NOT NULL,
     discipline         VARCHAR(255) NOT NULL,
     price              FLOAT        NOT NULL,
-    start_time         TIME,
-    end_time           TIME,
-    day                VARCHAR(255),
-    date               DATE,
     course_description TEXT NOT NULL,
-    lesson_status      BOOLEAN      NOT NULL,
     image              VARCHAR(255)
 );
 ALTER TABLE Courses
