@@ -29,7 +29,8 @@ CREATE TABLE Courses
     discipline         VARCHAR(255) NOT NULL,
     price              FLOAT        NOT NULL,
     course_description TEXT NOT NULL,
-    image              VARCHAR(255)
+    image              VARCHAR(255),
+    section INT
 );
 ALTER TABLE Courses
     AUTO_INCREMENT = 1;
@@ -98,4 +99,3 @@ CREATE TABLE TrainingPlans (
                                FOREIGN KEY (client_id) REFERENCES Clients(client_id)
 );
 ALTER TABLE TrainingPlans AUTO_INCREMENT = 1;
-
