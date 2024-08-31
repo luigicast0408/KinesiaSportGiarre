@@ -1,9 +1,9 @@
 <?php
-require_once ("dbConnection/DB_connection.php");
+require_once ("../../dbConnection/DB_connection.php");
 function showCourses($value) {
 $connection = DBConnect();
 
-$query = "SELECT * FROM Courses WHERE type='unit' AND partKinesia= $value";
+$query = "SELECT * FROM Courses WHERE type='unit' AND section= $value";
 $statement = $connection->prepare($query);
 $statement->execute();
 $courses = $statement->fetchAll();
@@ -16,10 +16,9 @@ ob_start();
         <div class="col-md-4 mb-4">
             <div class="card h-100 <?= $class ?>">
                 <img class="card-img-top" src="<?= htmlspecialchars($course['image']) ?>" alt="">
+                <h4 class="card-title"><?= htmlspecialchars($course['discipline']) ?></h4>
                 <div class="card-body">
-                    <h4 class="card-title"><?= htmlspecialchars($course['discipline']) ?></h4>
-                    <p class="card-text"><?= htmlspecialchars($course['course_description']) ?></p>
-                    <p class="card-text"><?= $course['partKinesia'] == 0 ? 'benessere' : 'altro' ?></p>
+                    <p class="card-text"><?=htmlspecialchars($course['course_description']) ?></p>
                 </div>
             </div>
         </div>
