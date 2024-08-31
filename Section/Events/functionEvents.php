@@ -1,5 +1,6 @@
 <?php
 require_once("../../dbConnection/DB_connection.php");
+require_once("functionEvents.php");
 
 function showEvents(): void
 {
