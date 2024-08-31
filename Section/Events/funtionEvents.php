@@ -1,10 +1,10 @@
 <?php
 require_once("../../dbConnection/DB_connection.php");
 
-function showEvents()
+function showEvents(): void
 {
     $connection = DBConnect();
-    $query = "SELECT event_name,type,event_description,date,location,image,time  FROM Events ";
+    $query = "SELECT *  FROM Events ";
     $stm = $connection->prepare($query);
     $stm->execute();
     $events = $stm->fetchAll(PDO::FETCH_ASSOC);
