@@ -2,7 +2,6 @@
 require_once ("../../dbConnection/DB_connection.php");
 function showCourses($value) {
 $connection = DBConnect();
-
 $query = "SELECT * FROM Courses WHERE type='unit' AND section= $value";
 $statement = $connection->prepare($query);
 $statement->execute();
@@ -15,10 +14,10 @@ ob_start();
         <?php $class = "card-bg-" . $index; ?>
         <div class="col-md-4 mb-4">
             <div class="card h-100 <?= $class ?>">
-                <img class="card-img-top" src="<?= htmlspecialchars($course['image']) ?>" alt="">
-                <h4 class="card-title"><?= htmlspecialchars($course['discipline']) ?></h4>
+                <img class="card-img-top" src="<?= ($course['image_link']) ?>" alt="">
+                <h4 class="card-title"><?= ($course['discipline']) ?></h4>
                 <div class="card-body">
-                    <p class="card-text"><?=htmlspecialchars($course['course_description']) ?></p>
+                    <p class="card-text"><?=($course['course_description']) ?></p>
                 </div>
             </div>
         </div>
