@@ -1,0 +1,10 @@
+.btn {
+    padding: 25px 40px;
+    font-size: 1.25rem;
+    border-radius: 30px;
+}
+
+.btn-group {
+    gap: 10px;
+    padding-top: 1%;
+}
