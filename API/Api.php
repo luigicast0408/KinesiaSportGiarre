@@ -1,6 +1,6 @@
 <?php
 
-require_once ("../dbConnection/config.php");
+require_once("../dbConnection/config.php");
 
 class Api {
     private $pdo;
@@ -19,14 +19,46 @@ class Api {
     }
 
     public function handleRequest(): void {
-        if (isset($_GET['request']) && $_GET['request'] === 'courses' && isset($_GET['section'])) {
-            $section = (int)$_GET['section'];
-            error_log("Request received: section = $section");
-            $this->getCourses($section);
+        if (isset($_GET['request'])) {
+            switch ($_GET['request']) {
+                case 'courses':
+                    if (isset($_GET['section'])) {
+                        $section = (int)$_GET['section'];
+                        $this->getCourses($section);
+                    } else {
+                        $this->handleError(400, "Section parameter is missing.");
+                    }
+                    break;
+                case 'clients':
+                    $this->getClients();
+                    break;
+                default:
+                    $this->handleError(400, "Invalid request.");
+            }
         } else {
-            $this->handleError(400, "Invalid request");
+            $this->handleError(400, "Request parameter is missing.");
         }
     }
+
+    private function getClients() {
+        $stmt = $this->pdo->prepare("SELECT client_id, first_name, last_name, phone_number, email FROM Clients");
+        $stmt->execute();
+        $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($clients as &$client) {
+            $clientId = $client['client_id'];
+            $targetDir = __DIR__ . "/uploads/clients/{$clientId}/"; // Adjusted the path
+            $client['file_exists'] = file_exists($targetDir) && !empty(glob($targetDir . "*"));
+        }
+
+        if ($clients) {
+            echo json_encode(["status" => 200, "clients" => $clients]);
+        } else {
+            $this->handleError(404, "No clients found");
+        }
+    }
+
+
 
     private function getCourses($section) {
         $stmt = $this->pdo->prepare("SELECT discipline, course_description, image_link FROM Courses WHERE section = :section");
