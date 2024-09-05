@@ -21,7 +21,7 @@ class Api {
     public function handleRequest(): void {
         if (isset($_GET['request'])) {
             switch ($_GET['request']) {
-                case 'courses':
+                case 'courses':{
                     if (isset($_GET['section'])) {
                         $section = (int)$_GET['section'];
                         $this->getCourses($section);
@@ -29,11 +29,23 @@ class Api {
                         $this->handleError(400, "Section parameter is missing.");
                     }
                     break;
-                case 'clients':
+                }
+                case 'clients':{
                     $this->getClients();
                     break;
-                default:
+                }
+                case 'profile': {
+                    if (isset($_GET['profile'])) {
+                        $profile = (int)$_GET['profile'];
+                        $this->getTrainingPlans($profile);
+                    } else {
+                        $this->handleError(400, "Profile parameter is missing.");
+                    }
+                    break; // Add break here
+                }
+                default:{
                     $this->handleError(400, "Invalid request.");
+                }
             }
         } else {
             $this->handleError(400, "Request parameter is missing.");
@@ -58,8 +70,6 @@ class Api {
         }
     }
 
-
-
     private function getCourses($section) {
         $stmt = $this->pdo->prepare("SELECT discipline, course_description, image_link FROM Courses WHERE section = :section");
         $stmt->bindParam(":section", $section, PDO::PARAM_INT);
@@ -70,6 +80,18 @@ class Api {
             echo json_encode(["status" => 200, "data" => $courses]);
         } else {
             $this->handleError(404, "No courses found for this section.");
+        }
+    }
+
+    private function getTrainingPlans($clientId){
+        $stmt = $this->pdo->prepare("SELECT file_name,file_path  FROM uploaded_files where client_id= :client_id");
+        $stmt->bindParam(":client_id", $clientId, PDO::PARAM_INT);
+        $stmt->execute();
+        $trainingPlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($trainingPlans) {
+            echo json_encode(["status" => 200, "data" => $trainingPlans]);
+        }else{
+            $this->handleError(404, "No training plans found for this client.");
         }
     }
 
