@@ -53,7 +53,7 @@ class Api {
     }
 
     private function getClients() {
-        $stmt = $this->pdo->prepare("SELECT client_id, first_name, last_name, phone_number, email FROM Clients");
+        $stmt = $this->pdo->prepare("SELECT client_id, first_name, last_name, phone_number, email FROM Clients WHERE isAdmin=0");
         $stmt->execute();
         $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
