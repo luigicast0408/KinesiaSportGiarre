@@ -10,22 +10,16 @@ function renderAdminNavbar() {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/Section/Admin/ShowUsers/indexShowUsers.php">Show Users</a>
+                        <a class="nav-link active" aria-current="page" href="/Section/Admin/ShowUsersAddFile/indexShowUsers.php">Show User and add file</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Users </a>
+                        <a class="nav-link" href="/Section/Admin/showAllUsers/indexShowUsers.php">Users </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">Courses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Clients</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="">Reports</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Settings</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/Section/Logout/logout.php">Logout</a>
