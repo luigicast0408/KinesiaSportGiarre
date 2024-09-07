@@ -1,0 +1,30 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Larger minimum size for images */
+    gap: 16px; /* Space between images */
+    padding: 16px; /* Padding around the grid */
+}
+
+.image-grid .image-card {
+    overflow: hidden; /* Ensures the images fit within the card */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.2s; /* Smooth zoom effect */
+}
+
+.image-grid .image-card img {
+    width: 100%; /* Make image take full width of the card */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Block display to prevent extra space below images */
+}
+
+.image-grid .image-card:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
