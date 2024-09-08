@@ -1,7 +1,7 @@
 <?php
-require_once ("../../dbConnection/DB_connection.php");
-require_once ("../../View/includeAll_lib.php");
-require_once ("../../View/navbarAdmin.php");
+require_once ("../../../dbConnection/DB_connection.php");
+require_once ("../../../View/includeAll_lib.php");
+require_once ("../../../View/navbarAdmin.php");
 
 // Database connection and course retrieval logic
 $connection = DBConnect();
@@ -34,10 +34,10 @@ if ($courseId > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../../style/style_footer.css">
-    <link rel="stylesheet" type="text/css" href="../../style/style_nav.css">
-    <link rel="stylesheet" type="text/css" href="../../style/style_cards.css">
-    <link rel="stylesheet" type="text/css" href="../../style/style_header.css">
+    <link rel="stylesheet" type="text/css" href="../../../style/style_footer.css">
+    <link rel="stylesheet" type="text/css" href="../../../style/style_nav.css">
+    <link rel="stylesheet" type="text/css" href="../../../style/style_cards.css">
+    <link rel="stylesheet" type="text/css" href="../../../style/style_header.css">
     <?php includeStyles(); ?>
     <title>Edit Course</title>
 </head>

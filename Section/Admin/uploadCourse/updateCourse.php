@@ -1,6 +1,6 @@
 <?php
-require_once("../../dbConnection/config.php");
-require_once("../../dbConnection/DB_connection.php");
+require_once("../../../dbConnection/config.php");
+require_once("../../../dbConnection/DB_connection.php");
 $connection=DBConnect();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
