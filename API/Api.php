@@ -77,7 +77,7 @@ class Api
     }
 
     private function getCourses($section){
-        $stmt = $this->pdo->prepare("SELECT discipline, course_description, image_link FROM Courses WHERE section = :section");
+        $stmt = $this->pdo->prepare("SELECT course_id, discipline, course_description, image_link FROM Courses WHERE section = :section");
         $stmt->bindParam(":section", $section, PDO::PARAM_INT);
         $stmt->execute();
         $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
