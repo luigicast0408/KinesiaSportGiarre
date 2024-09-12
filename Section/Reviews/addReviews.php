@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $course_id = $_POST['course'];
     $rating = intval($_POST['rating']);
     $comment = $_POST['comment'];
-    $response = '';
+    $response = 0;
 
     try {
         $stmt = $connection->prepare("INSERT INTO Reviews (client_id, course_id, rating, comment, response)
