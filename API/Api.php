@@ -67,6 +67,11 @@ class Api
                     break;
                 }
 
+                case 'reviews';{
+                   $this->getReviews();
+                   break;
+                }
+
                 default:{
                     $this->handleError(400, "Invalid request.");
                 }
@@ -148,6 +153,28 @@ class Api
             echo json_encode(["status" => 200, "data" => $images]);
         } else {
             $this->handleError(404, "No images found for these events.");
+        }
+    }
+
+    private function getReviews() {
+        try {
+            $query = "SELECT Reviews.course_id, Reviews.client_id, Clients.first_name, Clients.last_name, Clients.email, Clients.phone_number, Courses.discipline, Reviews.rating, Reviews.comment
+          FROM Reviews
+          JOIN Clients ON Clients.client_id = Reviews.client_id
+          JOIN Courses ON Courses.course_id = Reviews.course_id
+          WHERE is_response = 0";
+
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($reviews) {
+                echo json_encode(["status" => 200, "data" => $reviews]);
+            } else {
+                echo json_encode(["status" => 404, "message" =>"No reviews found."])    ;
+            }
+        } catch (PDOException $e) {
+            echo json_encode(["status" => 500, "message" => "Error in the server" . $e->getMessage()]);
         }
     }
 
