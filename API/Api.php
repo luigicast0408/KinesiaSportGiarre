@@ -68,8 +68,13 @@ class Api
                 }
 
                 case 'reviews';{
-                   $this->getReviews();
-                   break;
+                    $this->getReviews();
+                    break;
+                }
+
+                case 'lessons':{
+                    $this->getLessons();
+                    break;
                 }
 
                 default:{
@@ -178,6 +183,20 @@ class Api
         }
     }
 
+    function  getLessons(){
+        $stmt = $this->pdo->prepare("
+        SELECT lesson_id, lesson_date, duration, courses.discipline
+        FROM Lessons
+        JOIN Courses ON Lessons.course_id = Courses.course_id
+    ");
+        $stmt->execute();
+        $lessons=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($lessons){
+            echo json_encode(["status"=>200,"data"=>$lessons]);
+        }else{
+            $this->handleError(404,"No lessons found.");
+        }
+    }
 }
 
 $api = new Api(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT);
