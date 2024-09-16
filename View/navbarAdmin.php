@@ -19,8 +19,17 @@ function renderAdminNavbar() {
                         <a class="nav-link" href="/Section/Admin/showAllCourses/indexShowCourses.php">Upload and delete courses</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/Section/Admin/showAllReviews/indexShowReviews.php">Response to reviews</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/Section/Admin/addCourse/indexAddCourse.php">Add course</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Section/Admin/addLessons/indexAddLessons.php">Add lesson</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Section/Admin/deleteLessons/indexDeleteLessons.php">Delete lesson</a>    
+                    </li
                     <li class="nav-item">
                         <a class="nav-link" href="/Section/Logout/logout.php">Logout</a>
                     </li>
