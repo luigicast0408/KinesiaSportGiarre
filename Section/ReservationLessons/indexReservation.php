@@ -19,7 +19,7 @@ if (!isset($_SESSION['client_id'])) {
     <link rel="stylesheet" type="text/css" href="../../style/style_header.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <?php includeStyles(); ?>
-    <title>Calendar with Lesson Reservations</title>
+    <title>Calendario Lezioni</title>
 </head>
 <body>
 <?php navbar()?>

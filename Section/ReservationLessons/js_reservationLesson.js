@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
 
-    // Inizializza il calendario
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         headerToolbar: {
@@ -9,16 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        editable: false, // Il calendario non è modificabile
+        editable: false,
         events: [],
         eventClick: function (info) {
-            openBookingModal(info.event); // Apri il modulo di prenotazione per l'evento selezionato
+            openBookingModal(info.event);
         },
     });
-
     calendar.render();
 
-    // Carica le lezioni dall'API
     fetch('http://localhost:8888/API/Api.php?request=lessons')
         .then(response => {
             if (!response.ok) {
@@ -49,10 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById("bookingModal");
     const closeModalBtn = document.getElementsByClassName("close")[0];
 
-    // Funzione per aprire il modulo di prenotazione
     function openBookingModal(lesson) {
         const startDate = new Date(lesson.start);
-        console.log("Start date object:", startDate); // Verifica l'oggetto della data
+        console.log("Start date object:", startDate);
 
         if (isNaN(startDate)) {
             alert('Invalid lesson start date. Please select a valid lesson.');
@@ -62,12 +58,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const mysqlDate = startDate.toISOString().slice(0, 19).replace('T', ' ');
         document.getElementById('lesson').value = lesson.title;
         document.getElementById('start').value = mysqlDate;
-        document.getElementById('lesson_id').value = lesson.id; // Assicurati di avere l'ID della lezione qui
-        console.log('Selected Lesson ID:', lesson.id); // Log per il debug
+        document.getElementById('lesson_id').value = lesson.id;
         modal.style.display = "block";
     }
 
-    // Chiudi il modulo di prenotazione
     closeModalBtn.onclick = function () {
         modal.style.display = "none";
     };
@@ -78,25 +72,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Gestisci l'invio del modulo di prenotazione
     document.getElementById('bookingForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevenire il comportamento di invio predefinito del modulo
+        event.preventDefault();
 
         const submitButton = document.getElementById('submit');
-        submitButton.disabled = true; // Disabilitare il pulsante di invio durante l'elaborazione
+        submitButton.disabled = true;
 
         const lessonTitle = document.getElementById('lesson').value;
         const lessonStart = document.getElementById('start').value;
-        const lessonId = document.getElementById('lesson_id').value; // ID della lezione
-        const client_id = document.getElementById('client_id').value; // ID del cliente
+        const lessonId = document.getElementById('lesson_id').value;
+        const client_id = document.getElementById('client_id').value;
 
         const formData = new URLSearchParams();
         formData.append('lesson', lessonTitle);
         formData.append('start', lessonStart);
-        formData.append('userId', client_id); // ID del cliente
-        formData.append('lesson_id', lessonId); // ID della lezione
-
-        console.log('Form data:', formData.toString()); // Log dei dati del modulo per debug
+        formData.append('userId', client_id);
+        formData.append('lesson_id', lessonId);
 
         fetch('http://localhost:8888/Section/ReservationLessons/bookLessons.php', {
             method: 'POST',
@@ -112,21 +103,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                console.log('Response:', data); // Log della risposta per debug
                 if (data.status === 200) {
                     alert('Prenotazione effettuata con successo.');
                     modal.style.display = "none";
-                    calendar.refetchEvents(); // Ricarica gli eventi del calendario
+                    calendar.refetchEvents();
                 } else {
                     alert('Errore durante la prenotazione della lezione: ' + (data.message || 'Errore sconosciuto.'));
                 }
             })
             .catch(error => {
-                console.error('Errore durante la prenotazione della lezione:', error);
                 alert('Si è verificato un errore durante la prenotazione della lezione. Riprova più tardi.');
             })
             .finally(() => {
-                submitButton.disabled = false; // Riabilitare il pulsante di invio
+                submitButton.disabled = false;
             });
     });
 });

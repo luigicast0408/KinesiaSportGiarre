@@ -12,7 +12,6 @@ if (!isset($_SESSION['client_id'])) {
 
 if (!isset($_POST['lesson_id'])) {
     echo json_encode(["status" => 400, "message" => "Dati non validi"]);
-    error_log('ID lezione non fornito' . $_POST['lesson_id']);
     exit();
 }
 $lessonId = $_POST['lesson_id'];
@@ -25,8 +24,6 @@ try {
     ");
     $lessonStmt->bindParam(':lesson_id', $lessonId);
     $lessonStmt->execute();
-
-    error_log('Lezioni trovate: ' . $lessonStmt->rowCount());
 
     if ($lessonStmt->rowCount() > 0) {
         $lessonData = $lessonStmt->fetch(PDO::FETCH_ASSOC);
@@ -41,10 +38,8 @@ try {
 
         echo json_encode(["status" => 200, "message" => "Lezione prenotata con successo"]);
     } else {
-        error_log('Lezione non trovata per l\'ID: ' . $lessonId);
         echo json_encode(["status" => 400, "message" => "Lezione non trovata"]);
     }
 } catch (Exception $e) {
-    error_log($e->getMessage());
     echo json_encode(["status" => 500, "message" => "Errore del server: " . $e->getMessage()]);
 }
