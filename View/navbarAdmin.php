@@ -31,6 +31,9 @@ function renderAdminNavbar() {
                         <a class="nav-link" href="/Section/Admin/deleteLessons/indexDeleteLessons.php">Delete lesson</a>    
                     </li
                     <li class="nav-item">
+                        <a class="nav-link" href="/Section/Admin/showAllReservationLesson/indexShowAllReservation.php">Show All Reservation Lesson</a>        
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/Section/Logout/logout.php">Logout</a>
                     </li>
                 </ul>
