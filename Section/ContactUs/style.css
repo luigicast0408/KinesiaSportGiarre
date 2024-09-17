@@ -1,0 +1,16 @@
+.contact-info {
+    margin-top: 20px;
+}
+.map-container {
+    margin-top: 20px;
+}
+.form-control {
+    border-radius: 20px;
+}
+.btn-custom {
+    border-radius: 20px;
+    width: 100%;
+}
+.card {
+    background-color: #e3f2fd; /* Light blue background color */
+}
