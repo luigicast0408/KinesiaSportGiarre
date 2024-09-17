@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../style/style_nav.css">
     <link rel="stylesheet" type="text/css" href="../../style/style_cards.css">
     <link rel="stylesheet" type="text/css" href="../../style/style_carousel.css">
+    <link rel="stylesheet" type="text/css" href="../Reviews/showReview/style_reviews.css">
     <title>Home</title>
     <?php includeStyles(); ?>
 </head>
@@ -81,8 +82,15 @@
 </div>
 
 <div class="container-fluid corsi">
-    <h4>I NOSTRI CORSI</h4>
-    <p> Di seguito i corsi che la nostra scuola propone.</p>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-xl-8 text-center">
+            <h3 class="fw-bold mb-4">Corsi</h3>
+            <p class="mb-4 pb-2 mb-md-5 pb-md-0">
+                I nostri corsi
+                Di seguito i corsi che la nostra scuola propone
+            </p>
+        </div>
+    </div>
 
     <div class="row">
         <?php
@@ -93,12 +101,30 @@
 </div>
 
 <div class="container-fluid">
-    <h4>I NOSTRI EVENTI</h4>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-xl-8 text-center">
+            <h3 class="fw-bold mb-4">Eventi</h3>
+            <p class="mb-4 pb-2 mb-md-5 pb-md-0">I nostri eventi</p>
+        </div>
+    </div>
     <div class="row">
         <?php showEvents() ?>
     </div>
 </div>
 
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-xl-8 text-center">
+            <h3 class="fw-bold mb-4">Testimonianze</h3>
+            <p class="mb-4 pb-2 mb-md-5 pb-md-0">I nostri clienti ci raccontano la loro esperienza</p>
+        </div>
+    </div>
+    <div id="reviews-container">
+
+    </div>
+</div>
+
+<script src="../Reviews/showReview/js_showAllReviewClient.js" defer></script>
 <?php generateFooter(); ?>
 </body>
 </html>
