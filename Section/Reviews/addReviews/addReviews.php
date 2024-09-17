@@ -1,6 +1,8 @@
 <?php
-require_once ("../../dbConnection/DB_connection.php");
-require_once ("../../View/errorMessage.php");
+session_start();
+require_once("../../../dbConnection/DB_connection.php");
+require_once("../../../View/errorMessage.php");
+
 
 $connection = DBConnect();
 $error_message = '';
@@ -14,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response = 0;
 
     try {
-        $stmt = $connection->prepare("INSERT INTO Reviews (client_id, course_id, rating, comment, response)
+        $stmt = $connection->prepare("INSERT INTO Reviews (client_id, course_id, rating, comment, response_test)
                                       VALUES (:client_id, :course_id, :rating, :comment, :response)");
         $stmt->bindParam(':client_id', $client_id);
         $stmt->bindParam(':course_id', $course_id);
@@ -24,25 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($stmt->execute()) {
             $_SESSION['success_message'] = "Recensione inviata con successo!";
-            header("Location: ../../View/successPage.php");
-            exit();
+            header("Location: ../../../View/Reviews/indexReviews.php");
         } else {
             $_SESSION['error_message'] = "Errore durante l'invio della recensione.";
-            header("Location: ../../View/errorPage.php");
+            header("Location: ../../../View/errorPage.php");
             exit();
         }
     } catch (PDOException $e) {
         $_SESSION['error_message'] = "Errore: " . $e->getMessage();
-        header("Location: ../../View/errorPage.php");
+        header("Location: ../../../View/errorPage.php");
         exit();
     }
 }
-
-
-if ($error_message) {
-    $_SESSION['error_message'] = $error_message;
-    header("Location: ../../View/errorPage.php");
-    exit();
-}
-
 ?>

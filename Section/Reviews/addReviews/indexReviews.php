@@ -1,9 +1,9 @@
 <?php
-require_once ("../../dbConnection/DB_connection.php");
-require_once ("../../View/includeAll_lib.php");
-require_once ("../../View/navbar.php");
-require_once ("../../View/footer.php");
-require_once ("../../View/errorMessage.php");
+require_once("../../../dbConnection/DB_connection.php");
+require_once("../../../View/includeAll_lib.php");
+require_once("../../../View/navbar.php");
+require_once("../../../View/footer.php");
+require_once("../../../View/errorMessage.php");
 ?>
 
 <!DOCTYPE html>
@@ -11,10 +11,10 @@ require_once ("../../View/errorMessage.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../../style/style_footer.css">
-    <link rel="stylesheet" type="text/css" href="../../style/style_nav.css">
-    <link rel="stylesheet" type="text/css" href="../../style/style_cards.css">
-    <link rel="stylesheet" type="text/css" href="../../style/style_header.css">
+    <link rel="stylesheet" type="text/css" href="../../../style/style_footer.css">
+    <link rel="stylesheet" type="text/css" href="../../../style/style_nav.css">
+    <link rel="stylesheet" type="text/css" href="../../../style/style_cards.css">
+    <link rel="stylesheet" type="text/css" href="../../../style/style_header.css">
     <?php includeStyles(); ?>
     <title>Lascia una Recensione</title>
 </head>
