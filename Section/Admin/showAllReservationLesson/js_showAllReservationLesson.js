@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const lessonSelect = document.getElementById('lesson');
 
     function loadLessons() {
-        fetch('http://localhost:8888/API/Api.php?request=lessons')
+        fetch('/API/Api.php?request=lessons')
             .then(response => response.json())
             .then(data => {
                 if (data.status === 200) {
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function loadReservations(lessonId) {
         if (!lessonId) return;
-        fetch(`http://localhost:8888/API/Api.php?request=reservations&lessonId=${lessonId}`)
+        fetch(`/API/Api.php?request=reservations&lessonId=${lessonId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 200) {

@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('userId', client_id);
         formData.append('lesson_id', lessonId);
 
-        fetch('http://localhost:8888/Section/ReservationLessons/bookLessons.php', {
+        fetch('/Section/ReservationLessons/bookLessons.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

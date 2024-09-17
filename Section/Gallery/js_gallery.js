@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('http://localhost:8888/Api/Api.php?request=events') // Fetch list of events
+    fetch('/Api/Api.php?request=events') // Fetch list of events
         .then(response => response.json())
         .then(data => {
             if (data.status === 200) {

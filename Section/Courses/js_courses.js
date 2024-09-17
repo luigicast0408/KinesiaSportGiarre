@@ -3,7 +3,7 @@ async function loadCourses(section) { //todo check if when the button ALL is chi
     console.log(`Fetching courses for section: ${section}`); // Debugging line
 
     try {
-        const url = `http://localhost:8888/API/Api.php?request=courses&section=${section}`;
+        const url = `/API/Api.php?request=courses&section=${section}`;
         console.log(`Fetching from URL: ${url}`);
 
         const response = await fetch(url);

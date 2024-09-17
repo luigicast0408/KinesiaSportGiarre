@@ -2,7 +2,7 @@ async function showUsers() {
     const clientsContainer = document.querySelector('.clients-container');
 
     try {
-        const url = `http://localhost:8888/API/Api.php?request=clients`;
+        const url = `/API/Api.php?request=clients`;
         console.log(`Fetching from URL: ${url}`);
 
         const response = await fetch(url);

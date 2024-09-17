@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const sectionSelect = document.querySelector('#section');
 
     function loadCourses(section) {
-        fetch(`http://localhost:8888/API/Api.php?request=courses&section=${section}`)
+        fetch(`/API/Api.php?request=courses&section=${section}`)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 200) {

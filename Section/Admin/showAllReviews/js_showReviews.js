@@ -4,7 +4,7 @@ async function loadReviews() {
     const reviewsContainer = document.querySelector('#review-container');
 
     try {
-        const url = `http://localhost:8888/API/Api.php?request=reviews`;
+        const url = `/API/Api.php?request=reviewsAdmin`;
 
         const response = await fetch(url);
 

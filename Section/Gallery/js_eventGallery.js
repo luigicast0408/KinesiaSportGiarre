@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Converted Event ID:', eventId);
 
     if (!isNaN(eventId)) {
-        const apiURL = `http://localhost:8888/Api/Api.php?request=eventImages&eventIds=${eventId}`;
+        const apiURL = `/Api/Api.php?request=eventImages&eventIds=${eventId}`;
         console.log(`Fetching: ${apiURL}`);
 
         fetch(apiURL)

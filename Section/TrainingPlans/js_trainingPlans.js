@@ -8,7 +8,7 @@ async function showTrainingPlans(clientId) {
     }
 
     try {
-        const url = `http://localhost:8888/API/Api.php?request=profile&profile=${clientId}`;
+        const url = `/API/Api.php?request=profile&profile=${clientId}`;
         const response = await fetch(url);
 
         if (!response.ok) {

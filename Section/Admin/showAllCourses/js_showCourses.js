@@ -5,7 +5,7 @@ async function loadCourses(section) {
     console.log(`Fetching courses for section: ${section}`);
 
     try {
-        const url = `http://localhost:8888/API/Api.php?request=courses&section=${section}`;
+        const url = `/API/Api.php?request=courses&section=${section}`;
         console.log(`Fetching from URL: ${url}`);
 
         const response = await fetch(url)

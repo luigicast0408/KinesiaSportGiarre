@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const reviewContainer = document.getElementById('reviews-container');
 
     function loadReviews() {
-        fetch('http://localhost:8888/API/Api.php?request=reviews')
+        fetch('/API/Api.php?request=reviews')
             .then(response => response.json())
             .then(data => {
                 if (data.status === 200) {

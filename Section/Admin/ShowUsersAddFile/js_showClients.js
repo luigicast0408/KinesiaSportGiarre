@@ -3,7 +3,7 @@ async function showClients() {
     console.log('Fetching clients data...'); // Debugging line
 
     try {
-        const url = `http://localhost:8888/API/Api.php?request=clients`;
+        const url = `/API/Api.php?request=clients`;
         console.log(`Fetching from URL: ${url}`);
 
         const response = await fetch(url);

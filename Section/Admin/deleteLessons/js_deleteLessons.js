@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     calendar.render();
 
     function loadLessons() {
-        fetch('http://localhost:8888/API/Api.php?request=lessons')
+        fetch('/API/Api.php?request=lessons')
             .then(response => response.json())
             .then(data => {
                 if (data.status === 200) {
