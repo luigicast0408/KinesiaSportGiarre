@@ -15,6 +15,7 @@ require_once ("../../View/includeAll_lib.php");
     <div class="form-container">
         <h3>Upload File for Client</h3>
         <form id="upload-form" enctype="multipart/form-data">
+            <input type="hidden" id="client_id" name="client_id">
             <label for="file">Select File to Upload</label>
             <input type="file" id="file" name="file" required>
 

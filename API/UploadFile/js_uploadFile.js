@@ -1,19 +1,14 @@
-// Get the client ID from the URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const clientId = urlParams.get('client_id');
-
-// Log client ID to ensure it's being fetched correctly
 console.log("Client ID:", clientId);
-
-// Set the client_id field in the form
-document.getElementById('client_id').value = clientId;
+document.getElementById('client_id').value =parseInt(clientId);
 
 document.getElementById('upload-btn').addEventListener('click', async () => {
     const form = document.getElementById('upload-form');
     const formData = new FormData(form);
 
     try {
-        const response = await fetch('http://localhost:8888/API/UploadFile/uploadFile.php', {
+        const response = await fetch('/API/UploadFile/uploadFile.php', {
             method: 'POST',
             body: formData
         });
