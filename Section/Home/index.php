@@ -1,7 +1,6 @@
 <?php
     require_once("../../View/navbar.php");
     require_once("../../View/footer.php");
-    require_once("../Courses/functionCourses.php");
     require_once("../Events/functionEvents.php");
     require_once("../../View/includeAll_lib.php");
 ?>
@@ -89,14 +88,14 @@
                 I nostri corsi
                 Di seguito i corsi che la nostra scuola propone
             </p>
+            <div id="courses-container">
+
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <?php
-        showCourses(0);
-        showCourses(1);
-        ?>
+
     </div>
 </div>
 
@@ -112,7 +111,7 @@
     </div>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid text-center">
     <div class="row d-flex justify-content-center">
         <div class="col-md-10 col-xl-8 text-center">
             <h3 class="fw-bold mb-4">Testimonianze</h3>
@@ -125,6 +124,7 @@
 </div>
 
 <script src="../Reviews/showReview/js_showAllReviewClient.js" defer></script>
+<script src="../Courses/js_courses.js" defer></script>
 <?php generateFooter(); ?>
 </body>
 </html>
