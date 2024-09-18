@@ -64,7 +64,7 @@ require_once("../../View/includeAll_lib.php");
                 </li>
                 <li>
                     <p><i class="fas fa-phone" style="color: black;"></i> <strong>Telefono:</strong>
-                        <a href="tel:+393280850471" class="footer-link">3280850471 (Salvatore Parisi)</a>
+                        <a href="tel:+393280850471" class="footer-link">3280850471 (Toto Parisi)</a>
                     </p>
                 </li>
                 <li>
