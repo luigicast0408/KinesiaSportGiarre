@@ -7,7 +7,8 @@ function generateFooter()
             <div class="container">
                 <div class="row text-md-left">
                     <div class="col-md-3 mb-3">
-                        <img src="/Images/logo.png" id="l1" alt="Logo" style="height: 80px; width: 80px;">
+                        <img src="/Images/logo.png" id="l1" alt="Logo" style="height: auto; width: 60%;">
+                        <img src="/Images/footerImages/logo_bjj.jpeg" id="l1" alt="Logo" style="height: auto; width: 60%;">
                     </div>
                     <div class="col-md-3 mb-3">
                         <h5>Link Utili</h5>
@@ -36,7 +37,7 @@ function generateFooter()
         </li>
         <li>
             <p><i class="fas fa-phone" style="color: white;"></i> <strong>Telefono:</strong>
-                <a href="tel:+393280850471" class="footer-link">3280850471 (Salvatore Parisi)</a>
+                <a href="tel:+393280850471" class="footer-link">3280850471 (Toto Parisi)</a>
             </p>
         </li>
         <li>
@@ -60,8 +61,6 @@ function generateFooter()
                 </div>
             </div>
         </footer>
-
-        <!-- Copyright and Webmaster -->
         <footer class="bg-light py-2">
             <div class="container-fluid text-center">
                 <div class="row">
