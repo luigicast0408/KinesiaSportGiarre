@@ -49,6 +49,28 @@ require_once ("../../../View/navbarAdmin.php");
                     <input type="number" id="duration" name="duration" class="form-control" required>
                 </div>
 
+                <div class="mb-3">
+                    <label for="instructors" class="form-label">Instructor:</label>
+                    <select id="instructors" name="instructors" class="form-select" required>
+                        <option value="">Caricamento istruttori...</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="max_participants" class="form-label">Max Participants:</label>
+                    <input type="number" id="max_participants" name="max_participants" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" id="price" name="price" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location:</label>
+                    <input type="text" id="location" name="location" class="form-control" required>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Add Lesson</button>
             </form>
         </div>
@@ -57,5 +79,6 @@ require_once ("../../../View/navbarAdmin.php");
     <div id='calendar'></div>
 </div>
 <script src="js_addLessons.js" defer></script>
+<script src="../addSchedulesInstructors/js_showInstructors.js" defer></script>
 </body>
 </html>

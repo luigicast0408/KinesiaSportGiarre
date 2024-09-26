@@ -44,7 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const courseId = parseInt(courseSelect.value);
         const lessonDate = document.getElementById('lesson_date').value;
         const duration = parseInt(document.getElementById('duration').value);
-        const discipline = courseSelect.options[courseSelect.selectedIndex].text; // Get the discipline
+        const discipline = courseSelect.options[courseSelect.selectedIndex].text;
+        const location = document.getElementById('location').value;
+        const instructor = document.getElementById('instructors').value;
+        const price = parseFloat(document.getElementById('price').value);
+        const maxParticipants = parseInt(document.getElementById('max_participants').value);
 
         const response = await fetch('http://localhost:8888/Section/Admin/addLessons/addLessons.php', {
             method: 'POST',
@@ -55,6 +59,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 course_id: courseId,
                 lesson_date: lessonDate,
                 duration: duration,
+                location: location,
+                instructor: instructor,
+                price: price,
+                max_participants: maxParticipants,
             }),
         });
 
@@ -65,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 title: `Course: ${discipline}`,
                 start: lessonDate,
                 duration: `PT${duration}M`,
+
                 allDay: false,
             });
             alert('Lesson added successfully!');
