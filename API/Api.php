@@ -2,8 +2,7 @@
 
 require_once("../dbConnection/config.php");
 
-class Api
-{
+class Api {
     private $pdo;
 
     public function __construct($host, $dbName, $user, $password, $port){
@@ -92,6 +91,10 @@ class Api
                     }
                     break;
                 }
+                case 'instructors':{
+                    $this->getInstructors();
+                    break;
+                }
                 default:{
                     $this->handleError(400, "Invalid request.");
                 }
@@ -102,7 +105,7 @@ class Api
     }
 
     private function getCourses($section){
-        $stmt = $this->pdo->prepare("SELECT course_id, discipline, course_description, image_link FROM Courses WHERE section = :section");
+        $stmt = $this->pdo->prepare("SELECT course_id, discipline, course_description, image_link FROM Courses WHERE section = :section AND type ='unit'");
         $stmt->bindParam(":section", $section, PDO::PARAM_INT);
         $stmt->execute();
         $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -211,6 +214,7 @@ class Api
         SELECT lesson_id, lesson_date, duration, Courses.discipline
         FROM Lessons
         JOIN Courses ON Lessons.course_id = Courses.course_id
+        WHERE Lessons.type = 'lesson'
         ");
         $stmt->execute();
         $lessons = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -229,7 +233,8 @@ class Api
             JOIN Reservations ON Clients.client_id = Reservations.client_id
             JOIN Lessons ON Reservations.lesson_id = Lessons.lesson_id
             JOIN Courses ON Lessons.course_id = Courses.course_id
-            WHERE Lessons.lesson_id = :lesson_id");
+            WHERE Lessons.lesson_id = :lesson_id AND Lessons.type = 'lesson'
+        ");
 
         $stmt->bindParam(":lesson_id", $lessonId, PDO::PARAM_INT);
         $stmt->execute();
@@ -261,6 +266,18 @@ class Api
             echo json_encode(["status" => 200, "data" => $reservations]);
         } else {
             $this->handleError(404, "No reservations found for this lesson.");
+        }
+    }
+
+    private function getInstructors(){
+        $stmt = $this->pdo->prepare("SELECT instructor_id, first_name, last_name, email, phone_number FROM Instructors");
+        $stmt->execute();
+        $instructors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($instructors) {
+            echo json_encode(["status" => 200, "instructors" => $instructors]);
+        } else {
+            $this->handleError(404, "No instructors found.");
         }
     }
 }
