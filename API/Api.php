@@ -73,6 +73,10 @@ class Api {
                     $this->getLessons();
                     break;
                 }
+                case 'getId':{
+                    $this->getIDofInstructorSchedule($_GET['instructorId'], $_GET['day'], $_GET['start_time'], $_GET['end_time']);
+                    break;
+                }
                 case 'usersByLessons':{
                     $lessonId = isset($_GET['lessonId']) ? (int)$_GET['lessonId'] : null;
                     if ($lessonId !== null) {
@@ -93,6 +97,15 @@ class Api {
                 }
                 case 'instructors':{
                     $this->getInstructors();
+                    break;
+                }
+                case 'instructorSchedules':{
+                    $instructorId = isset($_GET['instructorId']) ? (int)$_GET['instructorId'] : null;
+                    if ($instructorId !== null) {
+                        $this->getInstructorScheduels($instructorId);
+                    } else {
+                        $this->handleError(400, "Instructor ID parameter is missing.");
+                    }
                     break;
                 }
                 default:{
@@ -230,8 +243,8 @@ class Api {
         $stmt = $this->pdo->prepare("
             SELECT first_name, last_name, email, phone_number, duration, lesson_date, discipline
             FROM Clients
-            JOIN Reservations ON Clients.client_id = Reservations.client_id
-            JOIN Lessons ON Reservations.lesson_id = Lessons.lesson_id
+            JOIN Reservation ON Clients.client_id = Reservation.client_id
+            JOIN Lessons ON Reservation.lesson_id = Lessons.lesson_id
             JOIN Courses ON Lessons.course_id = Courses.course_id
             WHERE Lessons.lesson_id = :lesson_id AND Lessons.type = 'lesson'
         ");
@@ -250,12 +263,12 @@ class Api {
     private function getReservations($lessonId) {
         $stmt = $this->pdo->prepare("
         SELECT Clients.first_name, Clients.last_name, Clients.email, Clients.phone_number, 
-               Reservations.reservation_date, Lessons.duration, Courses.discipline
-        FROM Reservations
-        JOIN Clients ON Reservations.client_id = Clients.client_id
-        JOIN Lessons ON Reservations.lesson_id = Lessons.lesson_id
+               Reservation.reservation_date, Lessons.duration, Courses.discipline
+        FROM Reservation
+        JOIN Clients ON Reservation.client_id = Clients.client_id
+        JOIN Lessons ON Reservation.lesson_id = Lessons.lesson_id
         JOIN Courses ON Lessons.course_id = Courses.course_id
-        WHERE Reservations.lesson_id = :lesson_id
+        WHERE Reservation.lesson_id = :lesson_id
     ");
 
         $stmt->bindParam(":lesson_id", $lessonId, PDO::PARAM_INT);
@@ -280,6 +293,49 @@ class Api {
             $this->handleError(404, "No instructors found.");
         }
     }
+
+    private function getInstructorScheduels($instructorId): void{
+        $stmt = $this->pdo->prepare("
+        SELECT start_time, end_time, day_of_week
+        FROM InstructorSchedules
+        WHERE instructor_id = :instructor_id
+    ");
+        $stmt->bindParam(":instructor_id", $instructorId, PDO::PARAM_INT);
+        $stmt->execute();
+        $lessons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($lessons) {
+            echo json_encode(["status" => 200, "data" => $lessons]);
+        } else {
+            $this->handleError(404, "No lessons found for this instructor.");
+        }
+    }
+
+    private function getIDofInstructorSchedule($instructorId, $day, $start_time, $end_time){
+        $stmt = $this->pdo->prepare("
+        SELECT instructor_schedule_id 
+        FROM InstructorSchedules 
+        WHERE instructor_id = :instructor_id 
+          AND day_of_week = :day 
+          AND start_time = :start_time 
+          AND end_time = :end_time
+    ");
+
+        $stmt->bindParam(":instructor_id", $instructorId, PDO::PARAM_INT);
+        $stmt->bindParam(":day", $day, PDO::PARAM_INT);
+        $stmt->bindParam(":start_time", $start_time, PDO::PARAM_STR);
+        $stmt->bindParam(":end_time", $end_time, PDO::PARAM_STR);
+
+        $stmt->execute();
+        $id = $stmt->fetchColumn();
+
+        if ($id) {
+            echo json_encode(["status" => 200, "data" => $id]);
+        } else {
+            echo json_encode(["status" => 404, "message" => "No ID found for this instructor schedule."]);
+        }
+    }
+
 }
 
 $api = new Api(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT);
