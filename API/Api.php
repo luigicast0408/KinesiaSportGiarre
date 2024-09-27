@@ -108,6 +108,16 @@ class Api {
                     }
                     break;
                 }
+                case 'privateLessons':{
+                    $instructorId = isset($_GET['instructorId']) ? (int)$_GET['instructorId'] : null;
+                    if (isset($_GET['instructor_id']) && !empty($_GET['instructor_id'])) {
+                        $instructorId = intval($_GET['instructor_id']); // Convert to integer to prevent SQL injection
+                        $this->getAllPrivateLessons($instructorId);
+                    } else {
+                        echo json_encode(['status' => 400, 'message' => 'Instructor ID is missing']);
+                        exit;
+                    }
+                }
                 default:{
                     $this->handleError(400, "Invalid request.");
                 }
@@ -336,6 +346,30 @@ class Api {
         }
     }
 
+    private function getAllPrivateLessons($instructorId): void {
+        try {
+            $stmt = $this->pdo->prepare("
+        SELECT PrivateLessons.private_lesson_id, PrivateLessons.date, InstructorSchedules.start_time, InstructorSchedules.end_time, 
+               Clients.first_name, Clients.last_name, Clients.email, Clients.phone_number
+        FROM PrivateLessons
+        JOIN Clients ON PrivateLessons.client_id = Clients.client_id
+        JOIN InstructorSchedules ON PrivateLessons.instructor_schedule_id = InstructorSchedules.instructor_schedule_id
+        WHERE InstructorSchedules.instructor_id = :instructor_id
+    ");
+            $stmt->bindParam(':instructor_id', $instructorId, PDO::PARAM_INT);
+            $stmt->execute();
+            $lessons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($lessons) {
+                echo json_encode(["status" => 200, "data" => $lessons]);
+            } else {
+                echo json_encode(["status" => 404, "message" => "No private lessons found for this instructor."]);
+            }
+        } catch (PDOException $e) {
+            echo json_encode(["status" => 500, "message" => "Error: " . $e->getMessage()]);
+        }
+        exit();
+    }
 }
 
 $api = new Api(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT);
