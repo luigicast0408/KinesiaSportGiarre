@@ -91,6 +91,9 @@ function navbar(): void
                         <li class="nav-item">
                             <a class="nav-link" href="/Section/Reviews/addReviews/indexReviews.php">Recenzioni</a>
                         </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Section/PrivateLessons/indexPrivateLessons.php">Prenota un trattamento</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">';
     viewUser();

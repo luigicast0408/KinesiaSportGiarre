@@ -10,7 +10,7 @@ function renderAdminNavbar() {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/Section/Admin/ShowUsersAddFile/indexShowUsersFile.php">Show User and add file</a>
+                        <a class="nav-link active" aria-current="page" href="/Section/Admin/showUsersAddFile/indexShowUsersFile.php">Show User and add file</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/Section/Admin/showAllUsers/indexShowUsers.php">Users </a>
@@ -33,6 +33,14 @@ function renderAdminNavbar() {
                     <li class="nav-item">
                         <a class="nav-link" href="/Section/Admin/showAllReservationLesson/indexShowAllReservation.php">Show All Reservation Lesson</a>        
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Section/Admin/addSchedulesInstructors/indexAddSchedulesInstructor.php">Add Private Lessons</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Section/Admin/showAllPrivateLessons/indexShowAllPrivateLessons.php">Show All Private Lessons</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Section/Admin/deleteSchedulesInstructors/indexDeleteSchedulesInstructors.php">Delete a Schedules Lessons Instructor</a>
                     <li class="nav-item">
                         <a class="nav-link" href="/Section/Logout/logout.php">Logout</a>
                     </li>
