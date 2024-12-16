@@ -1,6 +1,8 @@
 <?php
 require_once("../../../View/includeAll_lib.php");
 require_once("../../../View/navbarAdmin.php");
+require_once("../../../View/headerAdmin.php");
+require_once("../../../View/footerAdmin.php");
 ?>
 
 <!DOCTYPE html>
@@ -16,14 +18,14 @@ require_once("../../../View/navbarAdmin.php");
     <title>Aggiungi Orari Disponibili</title>
 </head>
 <body>
-<?php renderAdminNavbar(); ?>
-
-<div class="header">
-    <h3>Aggiungi Orari Disponibili per Insegnante</h3>
-</div>
+<?php
+echo renderAdminNavbar();
+echo renderAdminHeader("Aggiungi Orari Disponibili per Insegnante")
+?>
 <div class="container mt-5">
-    <div class="card">
+    <div class="card shadow-lg rounded border-0">
         <div class="card-body">
+            <h4 class="card-title text-center mb-4">Aggiungi Orario Insegnante</h4>
             <form method="POST" id="addHoursForm" class="mb-4" action="schedulesInstructor.php">
                 <div class="mb-3">
                     <label for="day" class="form-label">Giorno:</label>
@@ -60,13 +62,15 @@ require_once("../../../View/navbarAdmin.php");
                 </div>
             </form>
 
-            <h5>Orari Aggiunti</h5>
-            <div id="schedule-instructors-container">
+            <h5 class="text-center mb-3">Orari Aggiunti</h5>
+            <div id="schedule-instructors-container" class="bg-light p-3 rounded shadow-sm">
 
             </div>
         </div>
     </div>
 </div>
+
+<?php echo renderAdminFooter()?>
 <script src="js_showInstructors.js" defer></script>
 <script src="js_addSchedulesInstructor.js" defer></script>
 </body>

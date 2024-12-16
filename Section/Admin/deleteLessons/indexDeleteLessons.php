@@ -1,6 +1,8 @@
 <?php
 require_once ("../../../View/includeAll_lib.php");
 require_once ("../../../View/navbarAdmin.php");
+require_once ("../../../View/headerAdmin.php");
+require_once ("../../../View/footerAdmin.php");
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -16,10 +18,11 @@ require_once ("../../../View/navbarAdmin.php");
 </head>
 <body>
 
-<?php renderAdminNavbar(); ?>
-<div class="header">
-    <h3>Delete Lesson</h3>
-</div>
+<?php
+echo renderAdminNavbar();
+echo renderAdminHeader("Delete Lesson");
+?>
+
 
 <div class="container mt-5">
     <h3>Delete Lesson</h3>
@@ -39,8 +42,7 @@ require_once ("../../../View/navbarAdmin.php");
 
     <div id="calendar"></div>
 </div>
-
-
+<?php echo renderAdminFooter() ?>
 <script src="js_deleteLessons.js"></script>
 </body>
 </html>

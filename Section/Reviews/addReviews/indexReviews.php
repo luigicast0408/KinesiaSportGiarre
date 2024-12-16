@@ -79,6 +79,12 @@ if (!isset($_SESSION['client_id'])) {
         </div>
     </div>
 </section>
+
+<div class="container py-5">
+    <div id="reviews-container">
+
+    </div>
+</div>
 <?php generateFooter(); ?>
 <script src="js_reviews.js" defer></script>
 </body>

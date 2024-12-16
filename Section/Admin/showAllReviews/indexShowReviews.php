@@ -14,7 +14,7 @@ require_once ("../../../View/navbarAdmin.php");
     <?php includeStyles() ?>
 </head>
 <body>
-<?php renderAdminNavbar() ?>
+<?php echo renderAdminNavbar() ?>
 
 <div class="header">
     <h3>Gestione Recenzioni</h3>

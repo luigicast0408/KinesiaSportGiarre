@@ -42,12 +42,9 @@ if ($courseId > 0) {
     <title>Edit Course</title>
 </head>
 <body>
-<?php renderAdminNavbar(); ?>
+<?php echo renderAdminNavbar(); ?>
 
 <div class="container-fluid">
-    <div class="header">
-        <h3>Edit Course</h3>
-    </div>
     <div class="card">
         <div class="card-body ">
             <form id="update-course-form" method="POST" action="updateCourse.php">
@@ -70,5 +67,6 @@ if ($courseId > 0) {
         </div>
     </div>
 </div>
+<?php renderAdminFooter(); ?>
 </body>
 </html>

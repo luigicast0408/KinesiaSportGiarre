@@ -1,6 +1,8 @@
 <?php
 require_once ("../../../View/navbarAdmin.php");
 require_once ("../../../View/includeAll_lib.php");
+require_once ("../../../View/headerAdmin.php");
+require_once ("../../../View/footerAdmin.php");
 ?>
 
 <!DOCTYPE html>
@@ -15,18 +17,12 @@ require_once ("../../../View/includeAll_lib.php");
     <?php includeStyles() ?>
 </head>
 <body>
-<?php renderAdminNavbar() ?>
-    <div class="header">
-        <h3>SHOW ALL USERS</h3>
-    </div>
+<?php
+echo renderAdminNavbar();
+echo renderAdminHeader("Show All Users");
+?>
 
-<div class="container-fluid">
-    <div class="clients-container">
-
-    </div>
-</div>
-
-
+<?php echo renderAdminFooter() ?>
 <script src="js_showUsers.js" defer></script>
 </body>
 </html>

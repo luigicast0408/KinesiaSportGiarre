@@ -1,6 +1,9 @@
 <?php
-require_once ("../../../View/includeAll_lib.php");
-require_once ("../../../View/navbarAdmin.php");
+require_once("../../../View/includeAll_lib.php");
+require_once("../../../View/navbarAdmin.php");
+require_once("../../../View/headerAdmin.php");
+require_once("../../../View/footerAdmin.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -15,13 +18,13 @@ require_once ("../../../View/navbarAdmin.php");
     <title>Add Lesson</title>
 </head>
 <body>
-<?php renderAdminNavbar(); ?>
+<?php
+echo renderAdminNavbar();
+echo renderAdminHeader("Aggiungi Lezione")
+?>
 
-<div class="header">
-    <h3>Add Lesson</h3>
-</div>
 <div class="container mt-5">
-    <div class="card">
+    <div class="card shadow-lg rounded border-0">
         <div class="card-body">
             <form id="addLessonForm" class="mb-4">
                 <div class="mb-3">
@@ -40,29 +43,29 @@ require_once ("../../../View/navbarAdmin.php");
                 </div>
 
                 <div class="mb-3">
-                    <label for="lesson_date" class="form-label">Lesson Date and Time:</label>
+                    <label for="lesson_date" class="form-label">Data e ora della lezione:</label>
                     <input type="datetime-local" id="lesson_date" name="lesson_date" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="duration" class="form-label">Duration (minutes):</label>
+                    <label for="duration" class="form-label">Durata (minuti):</label>
                     <input type="number" id="duration" name="duration" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="instructors" class="form-label">Instructor:</label>
+                    <label for="instructors" class="form-label">Istruttore:</label>
                     <select id="instructors" name="instructors" class="form-select" required>
                         <option value="">Caricamento istruttori...</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
-                    <label for="max_participants" class="form-label">Max Participants:</label>
+                    <label for="max_participants" class="form-label">Numero massimo di partecipanti:</label>
                     <input type="number" id="max_participants" name="max_participants" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="price" class="form-label">Price:</label>
+                    <label for="price" class="form-label">Prezzo:</label>
                     <input type="number" id="price" name="price" class="form-control" required>
                 </div>
 
@@ -71,13 +74,15 @@ require_once ("../../../View/navbarAdmin.php");
                     <input type="text" id="location" name="location" class="form-control" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Add Lesson</button>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 py-2 mt-3 shadow">Aggiungi Lezione</button>
+                </div>
             </form>
         </div>
     </div>
-
-    <div id='calendar'></div>
 </div>
+
+<?php echo renderAdminFooter() ?>
 <script src="js_addLessons.js" defer></script>
 <script src="../addSchedulesInstructors/js_showInstructors.js" defer></script>
 </body>

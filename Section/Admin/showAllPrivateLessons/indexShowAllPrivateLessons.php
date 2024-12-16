@@ -15,7 +15,7 @@ require_once("../../../View/includeAll_lib.php");
     <?php includeStyles() ?>
 </head>
 <body>
-<?php renderAdminNavbar() ?>
+<?php echo renderAdminNavbar() ?>
 
 <div class="header">
     <h3>Gestione Lezione private</h3>

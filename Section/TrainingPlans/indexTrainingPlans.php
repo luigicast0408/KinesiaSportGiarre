@@ -26,7 +26,9 @@ $userLastName = isset($_SESSION['surname']) ? $_SESSION['surname'] : '';
     <p>Benvenuto/a, <?php echo $userFirstName . ' ' . $userLastName; ?>!</p>
 </div>
 
-<div class="container-fluid">
+<div class="container mt-5">
+    <h2 class="text-center">Piani di Allenamento</h2>
+    <div class="row trainingPlans"></div>
     <div class="trainingPlans"></div>
 </div>
 

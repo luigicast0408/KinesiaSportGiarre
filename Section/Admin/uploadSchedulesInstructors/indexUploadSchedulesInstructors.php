@@ -1,6 +1,8 @@
 <?php
 require_once("../../../View/includeAll_lib.php");
 require_once("../../../View/navbarAdmin.php");
+require_once("../../../View/footerAdmin.php");
+require_once("../../../View/headerAdmin.php");
 require_once ("../../../dbConnection/DB_connection.php");
 $connection = DBConnect();
 
@@ -34,11 +36,10 @@ if ($schedules) {
     <title>Modifica Orari Disponibili</title>
 </head>
 <body>
-<?php renderAdminNavbar(); ?>
-
-<div class="header">
-    <h3>Modifica Orari Disponibili per Insegnante</h3>
-</div>
+<?php
+echo renderAdminNavbar();
+echo renderAdminHeader("Modifica Orari Disponibili");
+?>
 
 <div class="container mt-5">
     <div class="card">
@@ -74,6 +75,7 @@ if ($schedules) {
         </div>
     </div>
 </div>
+<?php renderAdminFooter() ?>
 
 </body>
 </html>
