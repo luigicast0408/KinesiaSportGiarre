@@ -1,6 +1,8 @@
 <?php
 require_once ("../../../View/includeAll_lib.php");
 require_once ("../../../View/navbarAdmin.php");
+require_once ("../../../View/footerAdmin.php");
+require_once ("../../../View/headerAdmin.php");
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -14,16 +16,16 @@ require_once ("../../../View/navbarAdmin.php");
     <?php includeStyles() ?>
 </head>
 <body>
-<?php echo renderAdminNavbar() ?>
-
-<div class="header">
-    <h3>Gestione Recenzioni</h3>
-</div>
+<?php
+echo renderAdminNavbar();
+echo renderAdminHeader("Gestione Recenzioni");
+?>
 
 <div class="container-fluid">
     <div id="review-container">
     </div>
 </div>
+<?php renderAdminFooter() ?>
 <script src="js_showReviews.js" defer></script>
 </body>
 </html>
