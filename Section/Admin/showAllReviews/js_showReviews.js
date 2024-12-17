@@ -16,8 +16,8 @@ async function loadReviews() {
         console.log('API Response:', data);
 
         if (data.status === 200 && Array.isArray(data.data)) {
-            allReviews = [];  // Clear the reviews array to prevent duplication
-            allReviews = allReviews.concat(data.data);  // Add reviews to array
+            allReviews = [];
+            allReviews = allReviews.concat(data.data);
             renderReviews(allReviews);
         } else {
             reviewsContainer.innerHTML = `<p>${data.message || 'Error loading reviews.'}</p>`;
@@ -48,6 +48,7 @@ function renderReviews(reviews) {
                     <th>Email</th>
                     <th>Discipline</th>
                     <th>Phone Number</th>
+                    <th>Comments</th>
                     <th>Response</th>
                 </tr>
             </thead>
@@ -64,6 +65,7 @@ function renderReviews(reviews) {
                 <td>${review.email !== undefined ? review.email : 'N/A'}</td>
                 <td>${review.discipline !== undefined ? review.discipline : 'N/A'}</td>
                 <td>${review.phone_number !== undefined ? review.phone_number : 'N/A'}</td>
+                <td>${review.comment !== undefined ? review.comment : 'N/A' }</td>
                 <td>
                     <form class="response-form" method="post">
                         <input type="hidden" name="client_id" value="${review.client_id}">
@@ -96,7 +98,7 @@ async function handleResponseSubmit(event) {
 
     const form = event.target;
     const clientId = form.querySelector('input[name="client_id"]').value;
-    const reviewId = form.querySelector('input[name="review_id"]').value;  // Correct reference to review_id
+    const reviewId = form.querySelector('input[name="review_id"]').value;
     const responseText = form.querySelector('textarea[name="response"]').value.trim();  // Trim the response text
 
     if (!responseText) {
