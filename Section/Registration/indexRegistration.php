@@ -58,7 +58,7 @@
 
                                 <div class="col-md">
                                     <div class="form-floating">
-                                        <input type="password" class="form-control" id="Password" name="Password"
+                                        <input type="password" class="form-control" id="Password" name="password"
                                                placeholder="Password">
                                         <label for="Password">Password</label>
                                     </div>
@@ -68,7 +68,7 @@
                             <div class="col g-1 mb-3">
                                 <div class="col-md">
                                     <div class="form-floating">
-                                        <input type="password" class="form-control" id="Password2" name="Password2"
+                                        <input type="password" class="form-control" id="Password2" name="password2"
                                                placeholder="Password">
                                         <label for="Password2">Password</label>
                                     </div>
