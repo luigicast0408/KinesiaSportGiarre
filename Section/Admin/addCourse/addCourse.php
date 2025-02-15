@@ -14,8 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $connection = DBConnect();
     $type = 'unit';
     try {
-
-        $stmt = $connection->prepare("INSERT INTO Courses (type, discipline, course_description, image_link,section) VALUES (:type, :discipline, :description, ' ',:section,'unit')");
+        $stmt = $connection->prepare("INSERT INTO Courses (discipline,type,course_description,image_link,section) VALUES (:discipline,'unit',:description,:image_link,:section)");
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':discipline', $discipline);
         $stmt->bindParam(':description', $description);

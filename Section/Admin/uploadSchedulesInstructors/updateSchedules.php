@@ -16,17 +16,17 @@ try {
         $end_time_obj->modify("+{$duration} minutes");
         $end_time = $end_time_obj->format('H:i:s');
 
-        $query = "UPDATE InstructorSchedules 
+        $query = "UPDATE Schedules
                   SET day_of_week = :day_of_week, 
                       start_time = :start_time, 
                       end_time = :end_time 
-                  WHERE instructor_schedule_id = :schedule_id";
+                  WHERE client_id = :client_id";
 
         $stm = $connection->prepare($query);
         $stm->bindParam(':day_of_week', $day_of_week, PDO::PARAM_INT);
         $stm->bindParam(':start_time', $start_time);
         $stm->bindParam(':end_time', $end_time);
-        $stm->bindParam(':schedule_id', $schedule_id, PDO::PARAM_INT);
+        $stm->bindParam(':client_id', $schedule_id, PDO::PARAM_INT);
 
         if ($stm->execute()) {
             header("Location: /Section/Admin/uploadSchedulesInstructors/indexUploadSchedulesInstructors.php?instructor_id=" . $_POST['instructor_id'] . "&success=1");
