@@ -134,6 +134,14 @@ class Api {
                     $this->getNumberOfReviewsWithoutResponse();
                     break;
                 }
+                case 'courseNumber':{
+                    $this ->getAllNumberOfCoursesRegistration();
+                    break;
+                }
+                case 'popularEvents':{
+                    $this ->getMostPopularEvent();
+                    break;
+                }
                 default:{
                     $this->handleError(400, "Invalid request.");
                 }
@@ -182,7 +190,7 @@ class Api {
     }
 
     private function getAllEvents(){
-        $stmt = $this->pdo->prepare("SELECT * FROM Events");
+        $stmt = $this->pdo->prepare("SELECT * FROM Events WHERE date >= CURRENT_DATE ");
         $stmt->execute();
         $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -424,6 +432,56 @@ class Api {
             $this->handleError(500, "Error: " . $e->getMessage());
         }
     }
+
+    private function getAllNumberOfCoursesRegistration(){
+        try {
+            $query = "SELECT course_id,discipline,
+                       (SELECT COUNT(*) AS total
+                        FROM Registration
+                        WHERE Registration.course_id = Courses.course_id) AS num_iscritti
+                FROM Courses;";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($result) {
+                echo json_encode(["status" => 200, "data" => $result]);
+            }else{
+                echo json_encode(["status" => 404, "message" => "No registrations found."]);
+            }
+
+        }catch (PDOException $e){
+            $this->handleError(500, "Error: " . $e->getMessage());
+        }
+    }
+
+    private function getMostPopularEvent(): void {
+        $sql = "SELECT *
+        FROM Events
+            WHERE event_id = (SELECT event_id
+              FROM Participation
+              GROUP BY event_id
+              ORDER BY COUNT(client_id) DESC
+              LIMIT 1);";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            echo json_encode(["status" => 200, "data" => $result]);
+        }
+        else{
+            echo json_encode(["status" => 404, "message" => "No events found."]);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }
 
 $api = new Api(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT);
