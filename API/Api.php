@@ -138,8 +138,16 @@ class Api {
                     $this ->getAllNumberOfCoursesRegistration();
                     break;
                 }
+                case 'clientReviews':{
+                    $this ->showUsersMakeReviews();
+                    break;
+                }
                 case 'popularEvents':{
                     $this ->getMostPopularEvent();
+                    break;
+                }
+                case 'eventAvg':{
+                    $this ->getMostPopularEventAvg();
                     break;
                 }
                 default:{
@@ -287,7 +295,7 @@ class Api {
         }
 
     }
-   
+
     private function getInstructors(){
         $stmt = $this->pdo->prepare("SELECT client_id, first_name, last_name, email, phone_number FROM Clients WHERE role = 1");
         $stmt->execute();
@@ -455,13 +463,14 @@ class Api {
     }
 
     private function getMostPopularEvent(): void {
-        $sql = "SELECT *
+
+        $sql = "SELECT COUNT(*) As number_event
         FROM Events
             WHERE event_id = (SELECT event_id
               FROM Participation
               GROUP BY event_id
-              ORDER BY COUNT(client_id) DESC
-              LIMIT 1);";
+              ORDER BY COUNT(client_id)
+              LIMIT 1);  ";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -473,15 +482,48 @@ class Api {
         }
     }
 
+    private function showUsersMakeReviews(): void {
+        $SQL = "SELECT client_id, first_name, last_name
+                FROM Clients
+                WHERE client_id IN (
+                            SELECT DISTINCT client_id
+                    FROM Reviews);";
+        $stmt = $this->pdo->prepare($SQL);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        if ($result) {
+            echo json_encode(["status" => 200, "data" => $result]);
+        }
+        else{
+            echo json_encode(["status" => 404, "message" => "No clients found."]);
+        }
+    }
 
-
-
-
-
-
-
-
+    private function getMostPopularEventAvg(): void{
+        $sql = "SELECT event_id, event_name, location
+                FROM Events
+                WHERE event_id IN (
+                    SELECT event_id
+                    FROM Participation
+                    GROUP BY event_id
+                    HAVING COUNT(client_id) > (
+                        SELECT AVG(participants_count)
+                        FROM (SELECT event_id, COUNT(client_id) AS participants_count
+                              FROM Participation
+                              GROUP BY event_id) AS avg_participation
+                    )
+                )";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($result) {
+            echo json_encode(["status" => 200, "data" => $result]);
+        }
+        else{
+            echo json_encode(["status" => 404, "message" => "No participants found."]);
+        }
+    }
 }
 
 $api = new Api(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT);
