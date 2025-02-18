@@ -15,7 +15,7 @@ async function showReport(){
         console.log('API Response:', data);
 
         if (data.status === 200) {
-            renderCourseTable(data.data);  // Passa data.data, che è l'array di corsi
+            renderCourseTable(data.data);
         } else {
             courseContainer.innerHTML = `<p>${data.message}</p>`;
         }
@@ -27,8 +27,6 @@ async function showReport(){
 
 function renderCourseTable(courses){
     const courseContainer = document.querySelector('#container-courses');
-
-    // Inizia la card
     let coursesHTML = `
         <div class="card">
             <div class="card-header">
@@ -46,7 +44,6 @@ function renderCourseTable(courses){
                     <tbody>
     `;
 
-    // Aggiungi i corsi alla tabella
     courses.forEach(course => {
         coursesHTML += `
             <tr>
@@ -57,7 +54,6 @@ function renderCourseTable(courses){
         `;
     });
 
-    // Chiudi la tabella e la card
     coursesHTML += `
                     </tbody>
                 </table>
