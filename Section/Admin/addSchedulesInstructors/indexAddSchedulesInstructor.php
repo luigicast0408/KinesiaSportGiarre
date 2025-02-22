@@ -38,40 +38,30 @@ echo renderAdminHeader("Aggiungi Orari Disponibili per Insegnante")
                         <option value="6">Sabato</option>
                     </select>
                 </div>
-
                 <div class="mb-3">
-                    <label for="time" class="form-label">Orario Inizio:</label>
-                    <input type="time" id="time" name="time" class="form-control" required>
+                    <label for="time_start" class="form-label">Orario Inizio:</label>
+                    <input type="time" id="time_start" name="time_start" class="form-control" required>
                 </div>
-
                 <div class="mb-3">
-                    <label for="duration" class="form-label">Durata (minuti):</label>
-                    <input type="number" id="duration" name="duration" class="form-control" required>
+                    <label for="time_start" class="form-label">Orario Inizio:</label>
+                    <input type="time" id="time_end" name="time_end" class="form-control" required>
                 </div>
-
                 <div class="mb-3">
                     <label for="instructors" class="form-label">Insegnante:</label>
                     <select id="instructors" name="instructor_id" class="form-select" required>
                         <option value="">Caricamento insegnanti...</option>
                     </select>
                 </div>
-
                 <div class="mb-3">
-                    <input type="hidden" name="instructor_id" id="instructor_id" value="">
+                    <input type="hidden" name="client_id" id="client_id" value="">
                     <button type="submit" class="btn btn-primary">Aggiungi Orario</button>
                 </div>
             </form>
-
-            <h5 class="text-center mb-3">Orari Aggiunti</h5>
-            <div id="schedule-instructors-container" class="bg-light p-3 rounded shadow-sm">
-
-            </div>
         </div>
     </div>
 </div>
 
 <?php echo renderAdminFooter()?>
 <script src="js_showInstructors.js" defer></script>
-<script src="js_addSchedulesInstructor.js" defer></script>
 </body>
 </html>
