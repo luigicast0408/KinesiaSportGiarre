@@ -1,48 +1,66 @@
 <?php
-session_start();
-require_once("../../dbConnection/DB_connection.php");
-$connection = DBConnect();
+require_once("db_connection.php"); // Connessione al database
 
-header('Content-Type: application/json');
+header("Content-Type: application/json");
 
-if (!isset($_SESSION['client_id'])) {
-    echo json_encode(["status" => 403, "message" => "Accesso non autorizzato"]);
-    exit();
+$data = json_decode(file_get_contents("php://input"), true);
+
+// Controllo se tutti i dati richiesti sono stati forniti
+if (!isset($data["client_id"], $data["date"], $data["start_time"], $data["end_time"])) {
+    echo json_encode(["status" => 400, "message" => "Dati mancanti per la prenotazione."]);
+    exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $instructor_id = $_POST['instructor_id'];
-    $date = $_POST['data'];
-    $instructor_schedule_id = $_POST['instructor_schedule_id'];
+$client_id = (int) $data["client_id"];
+$date = $data["date"];
+$start_time = $data["start_time"];
+$end_time = $data["end_time"];
 
+try {
+    $pdo = new PDO("mysql:host=localhost;dbname=your_database", "your_username", "your_password", [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
 
-    $checkQuery = "SELECT COUNT(*) FROM PrivateLessons WHERE instructor_schedule_id = ? AND date = ?";
-    $stmt = $connection->prepare($checkQuery);
-    $stmt->bindParam(1, $instructor_schedule_id, PDO::PARAM_INT);
-    $stmt->bindParam(2, $date, PDO::PARAM_STR);
-    $stmt->execute();
-    $count = $stmt->fetchColumn();
+    // Controlla se l'orario è già prenotato (evita sovrapposizioni)
+    $stmt = $pdo->prepare("
+        SELECT COUNT(*) 
+        FROM PrivateLessons 
+        WHERE course_id = :client_id 
+        AND date = :date 
+        AND (
+            (:start_time BETWEEN time_start AND time_end) OR 
+            (:end_time BETWEEN PrivateLessons.time_start AND time_end) OR 
+            (time_start BETWEEN :start_time AND :end_time) OR 
+            (time_end BETWEEN :start_time AND :end_time)
+        )
+    ");
+    $stmt->execute([
+        ":client_id" => $client_id,
+        ":date" => $date,
+        ":start_time" => $start_time,
+        ":end_time" => $end_time
+    ]);
 
-    if ($count > 0) {
-        echo json_encode(["status" => 409, "message" => "Lezione già prenotata per questa data."]);
-        exit();
+    if ($stmt->fetchColumn() > 0) {
+        echo json_encode(["status" => 409, "message" => "L'orario selezionato è già prenotato."]);
+        exit;
     }
 
-    $client_id = $_SESSION['client_id'];
-    $insertQuery = "INSERT INTO PrivateLessons (client_id, instructor_id, date, instructor_schedule_id,status) VALUES (?, ?, ?, ?,0)";
-    $insertStmt = $connection->prepare($insertQuery);
-    $insertStmt->bindParam(1, $client_id, PDO::PARAM_INT);
-    $insertStmt->bindParam(2, $instructor_id, PDO::PARAM_INT);
-    $insertStmt->bindParam(3, $date, PDO::PARAM_STR);
-    $insertStmt->bindParam(4, $instructor_schedule_id, PDO::PARAM_INT);
+    // Inserisce la nuova prenotazione
+    $stmt = $pdo->prepare("
+        INSERT INTO PrivateLessons (date, status, price, course_id, time_start, time_end) 
+        VALUES (:date, 0, 0, :course_id, :start_time, :end_time)
+    ");
+    $stmt->execute([
+        ":date" => $date,
+        ":course_id" => $client_id,
+        ":start_time" => $start_time,
+        ":end_time" => $end_time
+    ]);
 
-    if ($insertStmt->execute()) {
-        echo json_encode(["status" => 200, "message" => "Lessons booking success."]);
-    } else {
-        echo json_encode(["status" => 500, "message" => "Error during the private booking lessons."]);
-    }
-} else {
-    echo json_encode(["status" => 405, "message" => "Method not allowed."]);
-    exit();
+    echo json_encode(["status" => 200, "message" => "Prenotazione confermata!"]);
+
+} catch (PDOException $e) {
+    echo json_encode(["status" => 500, "message" => "Errore nel database: " . $e->getMessage()]);
 }
-?>
+

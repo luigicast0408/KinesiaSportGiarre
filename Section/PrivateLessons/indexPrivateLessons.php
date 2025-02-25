@@ -1,70 +1,81 @@
 <?php
-require_once ("../../View/navbar.php");
-require_once ("../../View/footer.php");
-require_once ("../../View/includeAll_lib.php");
-
-if (!isset($_SESSION['client_id'])) {
-    header("Location: /Section/Login/indexLogin.php");
-    exit();
-}
-
+require_once("../../View/navbar.php");
+require_once("../../View/footer.php");
+require_once("../../View/includeAll_lib.php");
 ?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti</title>
     <link rel="stylesheet" type="text/css" href="../../style/style_footer.css">
     <link rel="stylesheet" type="text/css" href="../../style/style_nav.css">
     <link rel="stylesheet" type="text/css" href="../../style/style_header.css">
+    <link rel="stylesheet" type="text/css" href="../../style/style_cards.css">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <?php includeStyles(); ?>
-    <title>Calendario  Trattamenti</title>
+    <?php includeStyles() ?>
+    <style>
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        #calendar {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-<?php navbar()?>
-<div class="header">
-    <h3>Calendario Trattamenti</h3>
-</div>
+<?php navbar(); ?>
 
-<div class="container">
-    <p>Con quale instruttore vuoi prenotare la lezione privata</p>
-    <label for="instructors"></label><select id="instructors" name="instructor" class="form-select" required>
-        <option value="">Caricamento insegnanti...</option>
-    </select>
-</div>
+<div class="container-fluid">
+    <div class="header">
+        <h3>📅 Prenotazione Lezioni</h3>
+    </div>
 
-<div class="container">
- <div class="calendar" id="calendar"></div>
+    <div class="instructor-select-container">
+        <label for="instructor" class="form-label"><strong>🔍 Seleziona un Istruttore:</strong></label>
+        <select id="instructor" class="form-select">
+            <option value="">-- Seleziona un Istruttore --</option>
+        </select>
+    </div>
 
+    <div class="section-select-container">
+        <label for="section" class="form-label"><strong>🔍 Seleziona una Sezione:</strong></label>
+        <select id="section" class="form-select">
+            <option value="0">Benessere</option>
+            <option value="1">Sport</option>
+        </select>
+    </div>
+
+    <div class="course-select-container">
+        <label for="course" class="form-label"><strong>🔍 Seleziona un Corso:</strong></label>
+        <select id="course" class="form-select">
+            <option value="">-- Seleziona un Corso --</option>
+        </select>
+    </div>
+
+    <div id="calendar"></div>
 </div>
 
 <div id="bookingModal" class="modal">
     <div class="modal-content">
-        <span class="close" aria-label="Close modal">&times;</span>
-        <h2 class="modal-title">Prenotazione</h2>
-        <div id="modalContent"></div>
-        <form id="bookingForm">
-            <input type="hidden" name="start_time" id="start_time">
-            <input type="hidden" name="end_time" id="end_time">
-            <input type="hidden" name="day_of_week" id="day_of_week">
-
-            <input type="hidden" name="instructor_id" id="instructor_id">
-            <input type="hidden" name="client_id" id="client_id" value="<?php echo $_SESSION['client_id'] ?>">
-            <input type="hidden" name="data" id="data">
-            <input type="hidden" name="instructor_schedule_id" id="instructor_schedule_id">
-
-            <button type="submit" class="btn btn-primary" id="submit" name="submit">Submit Booking</button>
-        </form>
+        <span id="closeModal" class="close">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <div id="modalBody"></div>
+        <button id="bookLesson">Prenota</button>
     </div>
 </div>
 
-<div id="errorMessage" style="color: red; display: none;"></div>
-<div id="successMessage" style="color: green; display: none;"></div>
+<script src="js_privateLessons.js" defer></script>
 
 <?php generateFooter(); ?>
-
-<script src="js_privateLessons.js" defer></script>
-<script src="../Admin/addSchedulesInstructors/js_showInstructors.js" defer></script>
 </body>
 </html>
