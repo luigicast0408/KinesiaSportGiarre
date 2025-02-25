@@ -69,8 +69,8 @@ class Api {
                     break;
                 }
 
-                case 'lessons':{
-                    $this->getLessons();
+                case 'stage':{
+                    $this->getStage();
                     break;
                 }
                 case 'getId':{
@@ -86,31 +86,27 @@ class Api {
                     }
                     break;
                 }
-                case 'reservations':{
-                    $lessonId = isset($_GET['lessonId']) ? (int)$_GET['lessonId'] : null;
-                    if ($lessonId !== null) {
-                        $this->getReservations($lessonId);
-                    } else {
-                        $this->handleError(400, "Lesson ID parameter is missing.");
-                    }
-                    break;
+                case 'stageParticipation':{
+                  $this->showAllStagePartecipation();
+                  break;
                 }
                 case 'instructors':{
                     $this->getInstructors();
                     break;
                 }
-                case 'instructorSchedules':{
-                    $instructorId = isset($_GET['instructorId']) ? (int)$_GET['instructorId'] : null;
-                    if ($instructorId !== null) {
-                        $this->getInstructorScheduels($instructorId);
+                case 'instructorSchedules': {
+                    $client_id = isset($_GET['client_id']) ? (int)$_GET['client_id'] : null;
+
+                    if ($client_id !== null) {
+                        $this->getInstructorSchedules($client_id);
                     } else {
-                        $this->handleError(400, "Instructor ID parameter is missing.");
+                        $this->handleError(400, "Client ID parameter is missing.");  // Changed the message to reflect the correct parameter name
                     }
                     break;
                 }
                 case 'privateLessons':{
                     $instructorId = isset($_GET['instructorId']) ? (int)$_GET['instructorId'] : null;
-                    if (isset($_GET['instructor_id']) && !empty($_GET['instructor_id'])) {
+                    if (!empty($_GET['instructor_id'])) {
                         $instructorId = intval($_GET['instructor_id']); // Convert to integer to prevent SQL injection
                         $this->getAllPrivateLessons($instructorId);
                     } else {
@@ -173,7 +169,7 @@ class Api {
     }
 
     private function getClients(){
-        $stmt = $this->pdo->prepare("SELECT client_id, first_name, last_name, phone_number, email FROM Clients WHERE is_admin = 0");
+        $stmt = $this->pdo->prepare("SELECT client_id, first_name, last_name, phone_number, email FROM Clients WHERE is_admin = 0 AND role = 0");
         $stmt->execute();
         $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -198,7 +194,7 @@ class Api {
     }
 
     private function getAllEvents(){
-        $stmt = $this->pdo->prepare("SELECT * FROM Events WHERE date >= CURRENT_DATE ");
+        $stmt = $this->pdo->prepare("SELECT * FROM Events WHERE date >= CURRENT_DATE AND type != 'stage'");
         $stmt->execute();
         $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -261,39 +257,21 @@ class Api {
         }
     }
 
-    private function getLessons() {
-        $query=
-        $stmt = $this->pdo->prepare();
+    private function getStageetraPartecipation() {
+        $query= "SELECT * 
+                 FROM Clients,Participation,Events
+                 WHERE Clients.client_id = Participation.client_id 
+                   AND Participation.event_id = Events.event_id
+                   AND date >= CURRENT_DATE AND type = 'stage'";
+        $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $lessons = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if ($lessons) {
             echo json_encode(["status" => 200, "data" => $lessons]);
         } else {
-            $this->handleError(404, "No lessons found.");
+            $this->handleError(404, "No stage found.");
         }
-    }
-
-    private function getUsersByPrivateLesson($privateLessonId) {
-        $stmt = $this->pdo->prepare("  
-        SELECT c.first_name, c.last_name, c.email, c.phone_number, pl.date AS lesson_date, co.discipline
-        FROM Clients c
-        JOIN Registration r ON c.client_id = r.client_id
-        JOIN Courses co ON r.course_id = co.course_id
-        JOIN PrivateLessons pl ON co.course_id = pl.course_id
-        WHERE pl.private_lesson_id = :private_lesson_id
-    ");
-
-        $stmt->bindParam(':private_lesson_id', $privateLessonId, PDO::PARAM_INT);
-        $stmt->execute();
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($users) {
-            echo json_encode(["status" => 200, "data" => $users]);
-        } else {
-            $this->handleError(404, "No users found for this lesson.");
-        }
-
     }
 
     private function getInstructors(){
@@ -308,60 +286,37 @@ class Api {
         }
     }
 
-    private function getInstructorScheduels($client_id): void {
-        $stmt = $this->pdo->prepare("
-        SELECT start_time, end_time, day_of_week
-        FROM Schedules,Clients
-        WHERE Clients.client_id = Schedules.client_id AND role = 1 AND Clients.client_id = :client_id
-    ");
-        $stmt->bindParam(":client_id", $client_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    private function getInstructorSchedules($client_id): void {
+        try {
+            $stmt = $this->pdo->prepare("
+            SELECT start_time, end_time, day_of_week,first_name,last_name
+            FROM Schedules
+            JOIN Clients ON Clients.client_id = Schedules.client_id
+            WHERE Clients.client_id = :client_id AND role = 1
+        ");
+            $stmt->bindParam(":client_id", $client_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($schedules) {
-            echo json_encode(["status" => 200, "data" => $schedules]);
-        } else {
-            $this->handleError(404, "No schedules found for this instructor.");
-        }
-    }
-
-    private function getIDofInstructorSchedule($client_id, $day, $start_time, $end_time){
-        $stmt = $this->pdo->prepare("
-        SELECT schedule_id
-        FROM Schedules
-        WHERE client_id = :instructor_id 
-          AND day_of_week = :day 
-          AND start_time = :start_time 
-          AND end_time = :end_time
-    ");
-
-        $stmt->bindParam(":instructor_id", $client_id, PDO::PARAM_INT);
-        $stmt->bindParam(":day", $day, PDO::PARAM_INT);
-        $stmt->bindParam(":start_time", $start_time, PDO::PARAM_STR);
-        $stmt->bindParam(":end_time", $end_time, PDO::PARAM_STR);
-
-        $stmt->execute();
-        $id = $stmt->fetchColumn();
-
-        if ($id) {
-            echo json_encode(["status" => 200, "data" => $id]);
-        } else {
-            echo json_encode(["status" => 404, "message" => "No ID found for this instructor schedule."]);
+            if ($schedules) {
+                echo json_encode(["status" => 200, "data" => $schedules]);
+            } else {
+                $this->handleError(404, "No schedules found for this instructor.");
+            }
+        } catch (PDOException $e) {
+            $this->handleError(500, "Database error: " . $e->getMessage());
         }
     }
 
     private function getAllPrivateLessons($courseIdentifier): void {
         try {
-            $statement = $this->pdo->prepare("  
-            SELECT PrivateLessons.private_lesson_id, PrivateLessons.date, Courses.discipline,
-                   Clients.first_name, Clients.last_name, Clients.email, Clients.phone_number
-            FROM PrivateLessons
-            JOIN Courses ON PrivateLessons.course_id = Courses.course_id
-            JOIN Registration ON Courses.course_id = Registration.course_id
-            JOIN Clients ON Registration.client_id = Clients.client_id
-            WHERE Courses.course_id = :course_identifier
-        ");
+            $statement = $this->pdo->prepare("SELECT *
+                                              FROM Clients,Registration,PrivateLessons
+                                              WHERE Clients.client_id = Registration.client_id
+                                              AND Registration.course_id = PrivateLessons.course_id
+                                              AND Registration.course_id = :course_identifier
 
+");
             $statement->bindParam(':course_identifier', $courseIdentifier, PDO::PARAM_INT);
             $statement->execute();
             $privateLessons = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -438,6 +393,23 @@ class Api {
             }
         } catch (PDOException $e) {
             $this->handleError(500, "Error: " . $e->getMessage());
+        }
+    }
+
+    private function showAllStagePartecipation(): void {
+        $query = "SELECT *
+                  FROM Clients,Participation,Events 
+                  WHERE Clients.client_id = Participation.client_id 
+                    AND Participation.event_id = Events.event_id  
+                    AND Events.type = 'stage'
+                    AND date >= CURRENT_DATE()";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $stagePartecipation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($stagePartecipation) {
+            echo json_encode(["status" => 200, "stage_partecipation" => $stagePartecipation]);
+        }else{
+            $this->handleError(404, "No stage found.");
         }
     }
 
@@ -524,6 +496,44 @@ class Api {
             echo json_encode(["status" => 404, "message" => "No participants found."]);
         }
     }
+
+    private function getIDofInstructorSchedule(mixed $instructorId, mixed $day, mixed $start_time, mixed $end_time): void
+    {
+        $sql = "SELECT schedule_id
+            FROM Schedules
+            WHERE client_id = :instructor_id
+              AND day_of_week = :day
+              AND start_time = :start_time
+              AND end_time = :end_time";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':instructor_id', $instructorId, PDO::PARAM_INT);
+        $stmt->bindParam(':day', $day, PDO::PARAM_INT); // day_of_week è un INT (1-7)
+        $stmt->bindParam(':start_time', $start_time, PDO::PARAM_STR);
+        $stmt->bindParam(':end_time', $end_time, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            echo json_encode(["status" => 200, "data" => $result]);
+        } else {
+            echo json_encode(["status" => 404, "message" => "No instructor schedule found."]);
+        }
+    }
+
+    private function getStage(){
+        $sql = "SELECT * FROM Events WHERE type='stage'";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($result) {
+            echo json_encode(["status" => 200, "data" => $result]);
+        } else {
+            echo json_encode(["status" => 404, "message" => "No stage found."]);
+        }
+    }
+
 }
 
 $api = new Api(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT);
