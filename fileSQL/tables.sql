@@ -6,8 +6,10 @@ CREATE TABLE Clients (
                          email VARCHAR(255) NOT NULL UNIQUE CHECK (email LIKE '%_@_%._%'),
                          username VARCHAR(40) NOT NULL,
                          password VARCHAR(255) NOT NULL,
-                         is_admin INT,
-                         role INT CHECK (role >= 0)
+                         is_admin INT CHECK ( is_admin >= 0  AND is_admin = 1),
+                         role INT CHECK (role >= 0),
+                         image_link  TEXT,
+                         description TEXT
 );
 
 CREATE TABLE Courses (
@@ -33,14 +35,6 @@ CREATE TABLE PrivateLessons (
                                 course_id INT NOT NULL, FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Stage (
-                       stage_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                       date DATE NOT NULL,
-                       max_partecipants INT CHECK (max_partecipants > 0),
-                       price FLOAT NOT NULL CHECK (price >= 0),
-                       course_id INT NOT NULL, FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE CASCADE
-);
-
 CREATE TABLE UserFiles (
                            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                            file_name VARCHAR(255) NOT NULL CHECK (LENGTH(file_name) > 3),
@@ -54,10 +48,10 @@ CREATE TABLE UserFiles (
 
 CREATE TABLE Reviews (
                          review_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                         rating INT NOT NULL CHECK (rating >= 0),
+                         rating INT NOT NULL CHECK (rating >= 0 AND rating <= 5),
                          comment TEXT NOT NULL CHECK (LENGTH(comment) >= 3),
                          response TEXT NOT NULL CHECK (LENGTH(response) >= 3),
-                         is_response INT CHECK (is_response >= 0),
+                         is_response INT CHECK (is_response >= 0 AND is_response = 1),
                          client_id INT NOT NULL, FOREIGN KEY (client_id) REFERENCES Clients(client_id) ON DELETE CASCADE
 );
 
@@ -65,7 +59,7 @@ CREATE TABLE Schedules (
                            schedule_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                            start_time DATE NOT NULL,
                            end_time DATE NOT NULL,
-                           day_of_week INT NOT NULL,
+                           day_of_week INT NOT NULL CHECK ( day_of_week >= 1 AND day_of_week <= 7),
                            client_id INT NOT NULL, FOREIGN KEY (client_id) REFERENCES Clients(client_id) ON DELETE CASCADE
 );
 
@@ -76,7 +70,11 @@ CREATE TABLE Events (
                         event_description TEXT NOT NULL CHECK (LENGTH(event_description) > 20),
                         date DATE NOT NULL,
                         location VARCHAR(45) NOT NULL CHECK (LENGTH(location) > 0),
-                        time TIME NOT NULL
+                        time_start TIME NOT NULL,
+                        time_end TIME NOT NULL,
+                        image_link VARCHAR(255),
+                        max_participants INT CHECK (max_participants >= 0)
+
 );
 
 CREATE TABLE Participation (
