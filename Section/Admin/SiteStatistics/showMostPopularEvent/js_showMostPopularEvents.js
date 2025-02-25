@@ -10,25 +10,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function loadEventCount() {
         fetch('/Api/Api.php?request=popularEvents')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Risposta API:', data); // Debug
-                if (data.status === 200 && data.data && data.data.number_event !== undefined) {
-                    number_event = parseInt(data.data.number_event);
-                    renderChart();
-                } else {
-                    console.warn('Dati non validi:', data);
+            .then(response => response.text())
+            .then(text => {
+                console.log('Risposta grezza API:', text);
+
+                try {
+                    const data = JSON.parse(text);
+                    console.log('Risposta JSON validata:', data);
+
+                    if (data.status === 200 && data.data) {
+                        number_event = Array.isArray(data.data) ? data.data.length : parseInt(data.data.number_event);
+                        renderChart();
+                    } else {
+                        console.warn('Formato dati non valido:', data);
+                    }
+                } catch (error) {
+                    console.error('Errore di parsing JSON:', error);
                 }
             })
             .catch(error => {
                 console.error('Errore nel recupero dei dati:', error);
             });
     }
+
 
     function renderChart() {
         console.log('Event Count:', number_event);
@@ -40,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const ctx = chartCanvas.getContext('2d');
 
-        // Rimuoviamo il grafico precedente, se esiste
         if (chartInstance) {
             chartInstance.destroy();
         }
@@ -68,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-
     }
 
     loadEventCount();
